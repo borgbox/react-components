@@ -5,10 +5,12 @@ import './style.css'
 interface IRadialChart {
     color?: string,
     textColor?: string,
-    progress: number
+    progress: number,
+    unit?: string,
+    animationTime?:number
 }
 
-const RadialChart = ({ color='#818893', progress, textColor='#d1dbe7' }: IRadialChart) => {
+const RadialChart = ({ color='#818893', progress, textColor='#d1dbe7', unit, animationTime=900 }: IRadialChart) => {
 
     const [strokeLength, setStrokeLength] = useState(0);
     const [valueCounter, setValueCounter] = useState(0);
@@ -22,7 +24,7 @@ const RadialChart = ({ color='#818893', progress, textColor='#d1dbe7' }: IRadial
 
     useEffect(() => {
         setStrokeLength(circumference / 100 * progress);
-        animateValue(0,progress,900);
+        animateValue(valueCounter > 0 ? valueCounter : 0,progress,animationTime);
     }, [progress])
 
 
@@ -69,7 +71,8 @@ const RadialChart = ({ color='#818893', progress, textColor='#d1dbe7' }: IRadial
                     cy="90"
                     r={circleRadius}
                 />
-                <text x="50%" y="50%" fill={textColor} fontSize='1.5em' dominant-baseline="middle" text-anchor="middle">{valueCounter} rpm</text> 
+                <text x="50%" y="50%" fill={textColor} fontSize='2.5em' dominantBaseline="middle" textAnchor="middle">{valueCounter}</text> 
+        <text x="50%" y="58%" fill={textColor} fontSize='1em' fillOpacity={.5}  dominantBaseline="hanging" textAnchor="middle">{unit}</text> 
             </svg>
         </div>
     )
